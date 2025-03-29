@@ -3,6 +3,15 @@ export type User = {
     fullname: string;
     username: string;
     image?: string;
+    verified?: boolean;
+    postsCount?: number;
+    bio?: string;
+    location?: string;
+    joined?: string;
+    following?: number;
+    followers?: number;
+    bannerImage?: string;
+    profileImage?: string;
   };
   
   export type Tweet = {

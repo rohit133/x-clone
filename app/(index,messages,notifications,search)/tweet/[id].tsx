@@ -7,10 +7,25 @@ import TabMainHeader from "../../../components/Ui/TabMainHeader";
 import TweetDetail from "../../../components/tweet/TweetDetail";
 import tweets from "@/assets/data/tweets";
 
+// Recursive function to find a tweet by id in both top-level tweets and nested threads
+const findTweetById = (tweetsArray: any[], id: string): any | null => {
+  for (const tweet of tweetsArray) {
+    if (tweet.id === id) {
+      return tweet;
+    }
+    if (tweet.thread && tweet.thread.length > 0) {
+      const found = findTweetById(tweet.thread, id);
+      if (found) return found;
+    }
+  }
+  return null;
+};
+
 export default function TweetPage() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  // Find the tweet with the matching id
-  const tweet = tweets.find((t) => t.id === id);
+  // Use the recursive function to find the tweet by id
+  const tweet = findTweetById(tweets, id);
+  
   if (!tweet) {
     return (
       <PageView>
@@ -21,10 +36,17 @@ export default function TweetPage() {
 
   return (
     <PageView>
-      <Stack.Screen options={{ 
-        title: "Tweet",
-        header: () => (<TabMainHeader sides={{ left: "back", center: "title", right: "empty", }} 
-        options={{ title: "Tweet" }}/>),}}/>
+      <Stack.Screen
+        options={{
+          title: "Tweet",
+          header: () => (
+            <TabMainHeader
+              sides={{ left: "back", center: "title", right: "empty" }}
+              options={{ title: "Tweet" }}
+            />
+          ),
+        }}
+      />
       <TweetDetail tweet={tweet} />
     </PageView>
   );

@@ -1,21 +1,18 @@
+import Tweet from "./Tweet";
 import React, { useState } from "react";
-import {
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
-} from "react-native";
+import { useRouter } from "expo-router";
 import Colors from "../../constants/Colors";
 import { Tweet as TweetType } from "../../types";
 import { TweetActionButton } from "./TweetActionButton";
-import Tweet from "./Tweet";
+import { FlatList, Image, StyleSheet, Text, TouchableHighlight, View } from "react-native";
 
 const TweetDetail = ({ tweet }: { tweet: TweetType }) => {
   // Local state for toggling action button active states
   const [isRetweeted, setIsRetweeted] = useState(false);
   const [isFavorited, setIsFavorited] = useState(false);
+
+  // Expo Router hook for navigation
+  const router = useRouter();
 
   // Format the createdAt date here if needed
   const formattedDate = new Date(tweet.createdAt).toLocaleString();
@@ -114,7 +111,7 @@ const TweetDetail = ({ tweet }: { tweet: TweetType }) => {
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
         <TouchableHighlight
-          onPress={() => console.log("Pressed tweet reply")}
+          onPress={() => router.push(`/tweet/${item.id}`)}
         >
           <Tweet tweet={item} />
         </TouchableHighlight>
