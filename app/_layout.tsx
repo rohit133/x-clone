@@ -1,39 +1,99 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { DarkTheme, DefaultTheme, ThemeProvider} from "@react-navigation/native";
+import { useFonts } from "expo-font";
+import { Tabs } from "expo-router";
+import { useEffect } from "react";
+import { useColorScheme } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import TabMainHeader from "../components/Ui/TabMainHeader";
+import Colors from "../constants/Colors";
+import { StatusBar } from "expo-status-bar";
+import {
+  HomeBorderIcon,
+  HomeFillIcon,
+  MessagesBorderIcon,
+  MessagesFillIcon,
+  NotificationsBorderIcon,
+  NotificationsFillIcon,
+  SearchBorderIcon,
+  SearchFillIcon,
+} from "../lib/icon";
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+const tabIconProps = {
+  width: 30,
+};
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+const tabIcons = {
+  index: {
+    normal: <HomeBorderIcon {...tabIconProps} />,
+    active: <HomeFillIcon {...tabIconProps} />,
+  },
+  search: {
+    normal: <SearchBorderIcon {...tabIconProps} />,
+    active: <SearchFillIcon {...tabIconProps} />,
+  },
+  notifications: {
+    normal: <NotificationsBorderIcon {...tabIconProps} />,
+    active: <NotificationsFillIcon {...tabIconProps} />,
+  },
+  messages: {
+    normal: <MessagesBorderIcon {...tabIconProps} />,
+    active: <MessagesFillIcon {...tabIconProps} />,
+  },
+};
 
-export default function RootLayout() {
+export default function RootLayoutNav() {
   const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <SafeAreaView style={{ flex: 1 }} edges={["right", "top", "left"]}>
+        <StatusBar style="dark" animated />
+
+        <Tabs
+          screenOptions={{
+            tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+            tabBarShowLabel: false,
+            tabBarStyle: {
+              backgroundColor: "#fff",
+            },
+            headerShown: false,
+          }}
+        >
+          <Tabs.Screen
+            name="(index)"
+            options={{
+              tabBarIcon: ({ focused }) => {
+                return tabIcons["index"][focused ? "active" : "normal"];
+              },
+            }}
+          />
+          <Tabs.Screen
+            name="(search)"
+            options={{
+              tabBarIcon: ({ focused }) => {
+                return tabIcons["search"][focused ? "active" : "normal"];
+              },
+            }}
+          />
+          <Tabs.Screen
+            name="(notifications)"
+            options={{
+              tabBarIcon: ({ focused }) => {
+                return tabIcons["notifications"][focused ? "active" : "normal"];
+              },
+            }}
+          />
+          <Tabs.Screen
+            name="(messages)"
+            options={{
+              tabBarIcon: ({ focused }) => {
+                return tabIcons["messages"][focused ? "active" : "normal"];
+              },
+            }}
+          />
+        </Tabs>
+      </SafeAreaView>
     </ThemeProvider>
   );
 }
