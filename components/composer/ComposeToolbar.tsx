@@ -10,11 +10,7 @@ type ComposeToolbarProps = {
   onLocationSelected: (location: any) => void;
 };
 
-const ComposeToolbar = ({
-  onMediaSelected,
-  onEmojiSelected,
-  onLocationSelected,
-}: ComposeToolbarProps) => {
+const ComposeToolbar = ({ onMediaSelected, onEmojiSelected, onLocationSelected }: ComposeToolbarProps) => {
   const handlePickImage = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permissionResult.granted) {

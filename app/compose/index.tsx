@@ -1,30 +1,58 @@
-import React, { useState } from "react";
-import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Image, View, Alert } from "react-native";
 import Colors from "@/constants/Colors";
-import ComposeHeader from "@/components/composer/ComposeHeader";
-import ComposeInput from "@/components/composer/ComposeInput";
-import ComposeToolbar from "@/components/composer/ComposeToolbar";
 import users from "@/assets/data/users";
-// Import your tweets asset array
 import tweets from "@/assets/data/tweets";
+import React, { useEffect, useRef } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { useTweetComposer } from "@/hooks/useTweetComposer";
+import TweetComposer from "@/components/composer/TweetComposer";
+import ComposeHeader from "@/components/composer/ComposeHeader";
+import ComposeToolbar from "@/components/composer/ComposeToolbar";
+import {SafeAreaView,ScrollView,StatusBar,StyleSheet,Alert,ToastAndroid} from "react-native";
+
 
 // Simple helper to generate a random ID.
 const generateRandomId = () => "t" + Math.floor(Math.random() * 1000000);
 
 export default function ComposeTweetScreen() {
-  const [tweetContent, setTweetContent] = useState("");
-  const [selectedMedia, setSelectedMedia] = useState<any>(null);
-  const [selectedLocation, setSelectedLocation] = useState<any>(null);
-
+  const navigation = useNavigation();
   const userInfo = users.find((user) => user.id === "u1");
+
+  const { tweetContent, setTweetContent, selectedMedia, setSelectedMedia, 
+  selectedLocation, setSelectedLocation, isPosting, setIsPosting, clearComposer} = useTweetComposer();
+  const discardListenerRef = useRef<() => void>();
+
+  // Add beforeRemove listener for unsaved content.
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("beforeRemove", (e) => {
+      if (tweetContent.trim() === "" && !selectedMedia) {
+        return;
+      }
+      e.preventDefault();
+      Alert.alert(
+        "Discard tweet?",
+        "Your tweet is not saved. Do you want to discard it?",
+        [
+          { text: "Cancel", style: "cancel", onPress: () => {} },
+          {
+            text: "Discard",
+            style: "destructive",
+            onPress: () => navigation.dispatch(e.data.action),
+          },
+        ]
+      );
+    });
+    discardListenerRef.current = unsubscribe;
+    return unsubscribe;
+  }, [navigation, tweetContent, selectedMedia]);
 
   const handlePost = () => {
     if (!tweetContent.trim()) {
       Alert.alert("Empty tweet", "Please add some content to your tweet.");
       return;
     }
+    setIsPosting(true);
 
-    // Create a new tweet object
+    // Create the tweet payload.
     const newTweet = {
       id: generateRandomId(),
       user: {
@@ -42,15 +70,22 @@ export default function ComposeTweetScreen() {
       thread: [],
     };
 
-    // Append the new tweet to the tweets array.
-    tweets.push(newTweet);
-    console.log("New tweet posted:", newTweet);
-    console.log("Updated tweets:", tweets);
+    // Simulate network delay or API call.
+    setTimeout(() => {
+      tweets.unshift(newTweet);
+      console.log("New tweet posted:", newTweet);
+      console.log("Updated tweets:", tweets);
 
-    // Optionally clear the composer after posting.
-    setTweetContent("");
-    setSelectedMedia(null);
-    setSelectedLocation(null);
+      clearComposer();
+      setIsPosting(false);
+      ToastAndroid.show("Tweet posted successfully!", ToastAndroid.SHORT);
+
+      // Remove beforeRemove listener so it doesn't block navigation.
+      if (discardListenerRef.current) {
+        discardListenerRef.current();
+      }
+      navigation.goBack();
+    }, 1000);
   };
 
   const handleMediaSelected = (media: any) => {
@@ -67,27 +102,38 @@ export default function ComposeTweetScreen() {
     setSelectedLocation(location);
   };
 
+  const removeSelectedImage = () => {
+    setSelectedMedia(null);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <ComposeHeader tweetContent={tweetContent} handlePost={handlePost} />
+      <ComposeHeader handlePost={handlePost} isPosting={isPosting} onPressBack={() => {
+          if (tweetContent.trim() !== "" || selectedMedia) {
+            Alert.alert( "Discard tweet?", "Your tweet is not saved. Do you want to discard it?",
+              [
+                { text: "Cancel", style: "cancel" },
+                {
+                  text: "Discard",
+                  style: "destructive",
+                  onPress: () => navigation.goBack(),
+                },
+              ]
+            );
+          } else {
+            navigation.goBack();
+          }
+      }}/>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <View style={styles.inputAndPreviewContainer}>
-          <ComposeInput
-            tweetContent={tweetContent}
-            setTweetContent={setTweetContent}
-            userProfileImage={userInfo?.profileImage || ""}
-          />
-
-          {/* Render media preview below the text input */}
-          {selectedMedia && selectedMedia.uri && (
-            <Image
-              source={{ uri: selectedMedia.uri }}
-              style={styles.mediaPreview}
-              resizeMode="cover"
-            />
-          )}
-        </View>
+        <TweetComposer
+          tweetContent={tweetContent}
+          setTweetContent={setTweetContent}
+          userProfileImage={userInfo?.profileImage || ""}
+          selectedMedia={selectedMedia}
+          isPosting={isPosting}
+          removeSelectedMedia={removeSelectedImage}
+        />
         <ComposeToolbar
           onMediaSelected={handleMediaSelected}
           onEmojiSelected={handleEmojiSelected}
@@ -106,14 +152,5 @@ const styles = StyleSheet.create({
   scrollContent: {
     paddingHorizontal: 16,
     paddingTop: 8,
-  },
-  inputAndPreviewContainer: {
-    marginBottom: 10,
-  },
-  mediaPreview: {
-    width: "100%",
-    height: 200,
-    borderRadius: 8,
-    marginTop: 10,
   },
 });
