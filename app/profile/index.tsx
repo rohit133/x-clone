@@ -1,10 +1,9 @@
-import { Stack, useLocalSearchParams } from "expo-router";
+import {Stack, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
-import { View, ScrollView, StatusBar, SafeAreaView, StyleSheet } from "react-native";
+import {ScrollView, SafeAreaView, StyleSheet } from "react-native";
 import PageView from "@/components/containers/PageView";
 import TabMainHeader from "@/components/Ui/TabMainHeader";
 import users from "@/assets/data/users";
-import tweets from "@/assets/data/tweets";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileTabs from "@/components/profile/ProfileTabs";
 import ProfileTweets from "@/components/profile/ProfileTweets";
@@ -12,14 +11,16 @@ import Colors from "@/constants/Colors";
 import { useTweets } from "@/context/TweetContext";
 
 const ProfileScreen = () => {
-  // const { userId } = useLocalSearchParams(); // Get user ID from params
-  const userId = "u1"; // Hardcoded for demonstration purposes
+  let { flag, userId } = useLocalSearchParams();
+  if (userId === undefined || userId === null) {
+    userId = "u1"
+  } 
   const userInfo = users.find((user) => user.id === userId ) || users[0]; // Default user if not found
   const [selectedTab, setSelectedTab] = useState("Posts");
   const [headerTitle, setHeaderTitle] = useState("Profile");
   
   const { tweets } = useTweets();
-  const filteredTweets = tweets.filter((tweet) => tweet.user.id === userId);
+  const filteredTweets = tweets.filter((tweet) => tweet.user.id === userId) ;
 
   const handleScroll = (event: { nativeEvent: { contentOffset: { y: any; }; }; }) => {
     const scrollY = event.nativeEvent.contentOffset.y;
