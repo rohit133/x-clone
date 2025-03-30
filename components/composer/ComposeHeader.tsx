@@ -1,38 +1,33 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 import { Stack } from "expo-router";
 import TabMainHeader from "@/components/Ui/TabMainHeader";
+import Colors from "@/constants/Colors";
 
 interface ComposeHeaderProps {
-  tweetContent: string;
   handlePost: () => void;
+  isPosting: boolean;
+  onPressBack?: () => boolean | void;
 }
 
-const ComposeHeader = ({ tweetContent, handlePost }: ComposeHeaderProps) => {
+const ComposeHeader = ({ handlePost, isPosting }: ComposeHeaderProps) => {
   return (
     <>
-      <Stack.Screen
-        options={{
-          title: "Compose Tweet",
-          header: () => (
-            <TabMainHeader
-              sides={{ left: "back", center: "title", right: "empty" }}
-              options={{ title: "Compose Tweet" }}
-            />
-          ),
-        }}
-      />
+      <Stack.Screen options={{ title: "Compose Tweet", header: () => (
+        <TabMainHeader sides={{ left: "back", center: "title", right: "empty" }} 
+        options={{ title: "Compose Tweet" }}/>
+      )}}/>
       <View style={styles.headerContainer}>
         <View style={styles.headerActions}>
           <TouchableOpacity onPress={() => console.log("Drafts pressed")}>
             <Text style={styles.draftsText}>Drafts</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.postButton}
-            onPress={handlePost}
-            disabled={!tweetContent.trim()}
-          >
-            <Text style={styles.postButtonText}>Post</Text>
+          <TouchableOpacity style={styles.postButton} onPress={handlePost} disabled={isPosting}>
+            {isPosting ? (
+              <ActivityIndicator size="small" color="#fff" />
+            ) : (
+              <Text style={styles.postButtonText}>Post</Text>
+            )}
           </TouchableOpacity>
         </View>
       </View>
@@ -54,6 +49,10 @@ const styles = StyleSheet.create({
   headerActions: {
     flexDirection: "row",
     alignItems: "center",
+  },
+  backText: {
+    fontSize: 16,
+    color: Colors.main,
   },
   draftsText: {
     color: "#1DA1F2",
