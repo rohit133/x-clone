@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useRouter, useSegments } from "expo-router";
+import { useRouter, useSegments } from "expo-router";
 import { Image, Pressable, StyleSheet, Text, View, Share } from "react-native";
 import { Tweet as TweetType } from "../../types";
 import { TweetActionButton } from "./TweetActionButton";
@@ -18,7 +18,6 @@ const Tweet = ({ tweet }: { tweet: TweetType }) => {
 
   const tweetDate = parseISO(tweet.createdAt);
   const daysDifference = differenceInDays(new Date(), tweetDate);
-
   let timeAgo;
   if (daysDifference < 6) {
     // If within 6 days, show abbreviated distance like "6d"
@@ -42,7 +41,7 @@ const Tweet = ({ tweet }: { tweet: TweetType }) => {
   };
 
   const handleComment = () => {
-    router.push(`/${segment}/compose?reply_to=${tweet.id}`);
+    router.push(`/${segment as string}/compose?reply_to=${tweet.id}`);
   };
 
   const handleShare = async () => {
@@ -59,16 +58,15 @@ const Tweet = ({ tweet }: { tweet: TweetType }) => {
   // Conditionally truncate the username if it's longer than 10 characters
   const username = tweet.user.username.length > 10 ? tweet.user.username.substring(0, 10) + "...": tweet.user.username;
   return (
-    <Pressable style={styles.container} onPress={() => { router.push(`/${segment}/tweet/${tweet.id}`) }}>
+    <Pressable style={styles.container} onPress={() => { router.push(`/tweet/${tweet.id}`) }}>
       <View style={styles.left_side}>
         {tweet.is_thread && !tweet.is_thread_start && (
           <View style={styles.thread_line_top} />
         )}
         <View>
-          <Image
-            source={{ uri: tweet.user.image }}
-            style={styles.owner_image}
-          />
+          <Pressable onPress={() => { router.push(`/user/${tweet.user.id}`) }}>
+            <Image source={{ uri: tweet.user.image }} style={styles.owner_image}/>
+          </Pressable>
         </View>
         {tweet.is_thread && !tweet.is_thread_end && (
           <View style={styles.thread_line_bottom} />

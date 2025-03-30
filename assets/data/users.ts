@@ -10,10 +10,8 @@ const users = [
     joined: "Joined March 2015",
     following: 181,
     followers: 80,
-    bannerImage:
-      "https://images.unsplash.com/photo-1503264116251-35a269479413?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80",
-    profileImage:
-      "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.png",
+    bannerImage:"https://images.unsplash.com/photo-1503264116251-35a269479413?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80",
+    profileImage: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YXZhdGFyfGVufDB8fDB8fHww",
   },
   {
     id: "u2",
@@ -29,7 +27,7 @@ const users = [
     bannerImage:
       "https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80",
     profileImage:
-      "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/john.png",
+      "https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YXZhdGFyfGVufDB8fDB8fHww",
   },
   {
     id: "u3",

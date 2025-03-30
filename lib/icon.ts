@@ -14,6 +14,9 @@ import RetweetFillIcon from "../assets/images/icons/retweet_border_bold_icon.svg
 import ShareBorderIcon from "../assets/images/icons/share_border_icon.svg";
 import LeftArrowIcon from "../assets/images/icons/left_arrow_icon.svg";
 import ThreeDotsIcon from "../assets/images/icons/three_dots_vertical.svg";
+import GrokFillIcon from "../assets/images/icons/grok_filled.svg";
+import GrokStrokeIcon from "../assets/images/icons/grok_stroke.svg";
+
 export {
   HomeBorderIcon,
   HomeFillIcon,
@@ -31,4 +34,6 @@ export {
   ShareBorderIcon,
   LeftArrowIcon,
   ThreeDotsIcon,
+  GrokStrokeIcon,
+  GrokFillIcon,
 };

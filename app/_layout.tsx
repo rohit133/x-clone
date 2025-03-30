@@ -1,99 +1,107 @@
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { DarkTheme, DefaultTheme, ThemeProvider} from "@react-navigation/native";
-import { useFonts } from "expo-font";
-import { Tabs } from "expo-router";
-import { useEffect } from "react";
-import { useColorScheme } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+// import { Stack } from "expo-router";
+// import TabMainHeader from "../components/Ui/TabMainHeader";
+// import { StatusBar } from "react-native";
+// import { SafeAreaView } from "react-native-safe-area-context";
+// import { HeaderConfigProvider, HeaderConfigContext } from "@/context/HeaderConfigContext";
+// import { useContext } from "react";
+
+// function LayoutContent() {
+//   const { config } = useContext(HeaderConfigContext);
+
+//   return ( 
+//     <SafeAreaView style={{ flex: 1 }} edges={["right", "top", "left"]}>
+//       <StatusBar animated />
+//       <Stack
+//         screenOptions={{
+//           header: () => <TabMainHeader  {...config}/>,
+//         }}
+//       />
+//     </SafeAreaView>
+//   );
+// }
+
+
+// export default function DynamicLayout() {
+//   return (
+//     <HeaderConfigProvider>
+//       <LayoutContent />
+//     </HeaderConfigProvider>
+//   );
+// }
+
+
+import { Stack } from "expo-router";
 import TabMainHeader from "../components/Ui/TabMainHeader";
-import Colors from "../constants/Colors";
-import { StatusBar } from "expo-status-bar";
-import {
-  HomeBorderIcon,
-  HomeFillIcon,
-  MessagesBorderIcon,
-  MessagesFillIcon,
-  NotificationsBorderIcon,
-  NotificationsFillIcon,
-  SearchBorderIcon,
-  SearchFillIcon,
-} from "../lib/icon";
+import { StatusBar } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { HeaderConfigProvider, HeaderConfigContext } from "@/context/HeaderConfigContext";
+import { useContext, useEffect } from "react";
+import { TweetProvider } from '@/context/TweetContext';
+import * as Notifications from 'expo-notifications';
+import { Platform } from 'react-native';
+import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 
-const tabIconProps = {
-  width: 30,
-};
+// Configure notifications
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
 
-const tabIcons = {
-  index: {
-    normal: <HomeBorderIcon {...tabIconProps} />,
-    active: <HomeFillIcon {...tabIconProps} />,
-  },
-  search: {
-    normal: <SearchBorderIcon {...tabIconProps} />,
-    active: <SearchFillIcon {...tabIconProps} />,
-  },
-  notifications: {
-    normal: <NotificationsBorderIcon {...tabIconProps} />,
-    active: <NotificationsFillIcon {...tabIconProps} />,
-  },
-  messages: {
-    normal: <MessagesBorderIcon {...tabIconProps} />,
-    active: <MessagesFillIcon {...tabIconProps} />,
-  },
-};
+function LayoutContent() {
+  const { config } = useContext(HeaderConfigContext);
 
-export default function RootLayoutNav() {
-  const colorScheme = useColorScheme();
+  useEffect(() => {
+    registerForPushNotificationsAsync();
+  }, []);
+
+  return ( 
+    <SafeAreaView style={{ flex: 1 }} edges={["right", "top", "left"]}>
+      <StatusBar animated />
+      <Stack
+        screenOptions={{
+          header: () => <TabMainHeader {...config} />,
+        }}
+      />
+    </SafeAreaView>
+  );
+}
+
+async function registerForPushNotificationsAsync() {
+  if (Platform.OS === 'web') {
+    // Web platform doesn't support push notifications
+    return;
+  }
+
+  const { status: existingStatus } = await Notifications.getPermissionsAsync();
+  let finalStatus = existingStatus;
+
+  if (existingStatus !== 'granted') {
+    const { status } = await Notifications.requestPermissionsAsync();
+    finalStatus = status;
+  }
+
+  if (finalStatus !== 'granted') {
+    console.log('Failed to get push token for push notification!');
+    return;
+  }
+
+  const token = await Notifications.getExpoPushTokenAsync({
+    projectId: 'your-project-id', // Replace with your project ID
+  });
+  console.log(token);
+}
+
+export default function DynamicLayout() {
+  useFrameworkReady();
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <SafeAreaView style={{ flex: 1 }} edges={["right", "top", "left"]}>
-        <StatusBar style="dark" animated />
-
-        <Tabs
-          screenOptions={{
-            tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-            tabBarShowLabel: false,
-            tabBarStyle: {
-              backgroundColor: "#fff",
-            },
-            headerShown: false,
-          }}
-        >
-          <Tabs.Screen
-            name="(index)"
-            options={{
-              tabBarIcon: ({ focused }) => {
-                return tabIcons["index"][focused ? "active" : "normal"];
-              },
-            }}
-          />
-          <Tabs.Screen
-            name="(search)"
-            options={{
-              tabBarIcon: ({ focused }) => {
-                return tabIcons["search"][focused ? "active" : "normal"];
-              },
-            }}
-          />
-          <Tabs.Screen
-            name="(notifications)"
-            options={{
-              tabBarIcon: ({ focused }) => {
-                return tabIcons["notifications"][focused ? "active" : "normal"];
-              },
-            }}
-          />
-          <Tabs.Screen
-            name="(messages)"
-            options={{
-              tabBarIcon: ({ focused }) => {
-                return tabIcons["messages"][focused ? "active" : "normal"];
-              },
-            }}
-          />
-        </Tabs>
-      </SafeAreaView>
-    </ThemeProvider>
+    <TweetProvider>
+      <HeaderConfigProvider>
+        <LayoutContent />
+      </HeaderConfigProvider>
+    </TweetProvider>
   );
 }
