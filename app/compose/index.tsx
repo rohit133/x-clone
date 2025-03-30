@@ -1,3 +1,5 @@
+// ComposeTweetScreen.tsx
+
 import Colors from "@/constants/Colors";
 import users from "@/assets/data/users";
 import tweets from "@/assets/data/tweets";
@@ -7,7 +9,8 @@ import { useTweetComposer } from "@/hooks/useTweetComposer";
 import TweetComposer from "@/components/composer/TweetComposer";
 import ComposeHeader from "@/components/composer/ComposeHeader";
 import ComposeToolbar from "@/components/composer/ComposeToolbar";
-import {SafeAreaView,ScrollView,StatusBar,StyleSheet,Alert,ToastAndroid} from "react-native";
+import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Alert, ToastAndroid } from "react-native";
+import { useNotifications } from "@/context/NotificationContext";
 
 
 // Simple helper to generate a random ID.
@@ -16,9 +19,18 @@ const generateRandomId = () => "t" + Math.floor(Math.random() * 1000000);
 export default function ComposeTweetScreen() {
   const navigation = useNavigation();
   const userInfo = users.find((user) => user.id === "u1");
-
-  const { tweetContent, setTweetContent, selectedMedia, setSelectedMedia, 
-  selectedLocation, setSelectedLocation, isPosting, setIsPosting, clearComposer} = useTweetComposer();
+  const {
+    tweetContent,
+    setTweetContent,
+    selectedMedia,
+    setSelectedMedia,
+    selectedLocation,
+    setSelectedLocation,
+    isPosting,
+    setIsPosting,
+    clearComposer,
+  } = useTweetComposer();
+  const { addNotification } = useNotifications();
   const discardListenerRef = useRef<() => void>();
 
   // Add beforeRemove listener for unsaved content.
@@ -76,6 +88,15 @@ export default function ComposeTweetScreen() {
       console.log("New tweet posted:", newTweet);
       console.log("Updated tweets:", tweets);
 
+      // Add a new notification using the notification context.
+      addNotification({
+        id: Date.now(), // use timestamp as unique id
+        icon: '🔔',
+        content: 'Your post was successfully published!',
+        isRead: false,
+        postId: newTweet.id  // use the tweet's id as postId
+      });
+
       clearComposer();
       setIsPosting(false);
       ToastAndroid.show("Tweet posted successfully!", ToastAndroid.SHORT);
@@ -109,9 +130,14 @@ export default function ComposeTweetScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" />
-      <ComposeHeader handlePost={handlePost} isPosting={isPosting} onPressBack={() => {
+      <ComposeHeader
+        handlePost={handlePost}
+        isPosting={isPosting}
+        onPressBack={() => {
           if (tweetContent.trim() !== "" || selectedMedia) {
-            Alert.alert( "Discard tweet?", "Your tweet is not saved. Do you want to discard it?",
+            Alert.alert(
+              "Discard tweet?",
+              "Your tweet is not saved. Do you want to discard it?",
               [
                 { text: "Cancel", style: "cancel" },
                 {
@@ -124,7 +150,8 @@ export default function ComposeTweetScreen() {
           } else {
             navigation.goBack();
           }
-      }}/>
+        }}
+      />
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <TweetComposer
           tweetContent={tweetContent}
