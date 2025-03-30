@@ -64,8 +64,15 @@ const Tweet = ({ tweet }: { tweet: TweetType }) => {
           <View style={styles.thread_line_top} />
         )}
         <View>
-          <Pressable onPress={() => { router.push(`/user/${tweet.user.id}`) }}>
-            <Image source={{ uri: tweet.user.image }} style={styles.owner_image}/>
+          <Pressable
+            onPress={() => {
+              router.push({
+                pathname: "/profile",
+                params: { flag: "differentUser", userId: tweet.user.id },
+              });
+            }}
+          >
+            <Image source={{ uri: tweet.user.image }} style={styles.owner_image} />
           </Pressable>
         </View>
         {tweet.is_thread && !tweet.is_thread_end && (

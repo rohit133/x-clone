@@ -10,8 +10,10 @@ const users = [
     joined: "Joined March 2015",
     following: 181,
     followers: 80,
-    bannerImage:"https://images.unsplash.com/photo-1503264116251-35a269479413?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80",
-    profileImage: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YXZhdGFyfGVufDB8fDB8fHww",
+    bannerImage:
+      "https://images.unsplash.com/photo-1503264116251-35a269479413?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80",
+    profileImage:
+      "https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YXZhdGFyfGVufDB8fDB8fHww",
   },
   {
     id: "u2",
@@ -108,6 +110,88 @@ const users = [
       "https://images.unsplash.com/photo-1504198453319-5ce911bafcde?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80",
     profileImage:
       "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/david.png",
+  },
+  // Dummy users from comments
+  {
+    id: "u8",
+    fullname: "Alice Anderson",
+    username: "alice",
+    verified: true,
+    postsCount: 10,
+    bio: "Enthusiastic developer.",
+    location: "Los Angeles, CA",
+    joined: "Joined May 2021",
+    following: 100,
+    followers: 150,
+    bannerImage:
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80",
+    profileImage:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=60",
+  },
+  {
+    id: "u9",
+    fullname: "Bob Builder",
+    username: "bob",
+    verified: false,
+    postsCount: 5,
+    bio: "Just building stuff.",
+    location: "Detroit, MI",
+    joined: "Joined August 2022",
+    following: 50,
+    followers: 75,
+    bannerImage:
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80",
+    profileImage:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=60",
+  },
+  {
+    id: "u10",
+    fullname: "Charlie Chaplin",
+    username: "charlie",
+    verified: true,
+    postsCount: 20,
+    bio: "Silent comedian turned coder.",
+    location: "London, UK",
+    joined: "Joined January 2023",
+    following: 80,
+    followers: 200,
+    bannerImage:
+      "https://images.unsplash.com/photo-1503264116251-35a269479413?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80",
+    profileImage:
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=60",
+  },
+  // Additional new users
+  {
+    id: "u11",
+    fullname: "Emily Davis",
+    username: "emilyd",
+    verified: false,
+    postsCount: 50,
+    bio: "Writer and coder.",
+    location: "Boston, MA",
+    joined: "Joined February 2020",
+    following: 120,
+    followers: 300,
+    bannerImage:
+      "https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80",
+    profileImage:
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=60",
+  },
+  {
+    id: "u12",
+    fullname: "Frank Miller",
+    username: "frankm",
+    verified: false,
+    postsCount: 75,
+    bio: "Graphic novelist and storyteller.",
+    location: "San Diego, CA",
+    joined: "Joined July 2019",
+    following: 200,
+    followers: 400,
+    bannerImage:
+      "https://images.unsplash.com/photo-1503264116251-35a269479413?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80",
+    profileImage:
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=60",
   },
 ];
 
