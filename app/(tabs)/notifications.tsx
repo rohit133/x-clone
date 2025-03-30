@@ -1,63 +1,40 @@
-// NotificationsScreen.js
+// NotificationsScreen.tsx
 
 import React from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import NotificationItem from "../../components/Notification/NotificationItem";
+import { useNotifications } from '@/context/NotificationContext';
 
 const NotificationsScreen = () => {
-  // Sample data to mimic the notifications in your screenshot
-  const notifications = [
-    {
-      id: 1,
-      icon: '🎙️',
-      content: 'Sejal Sud is hosting the Space: "How to win friends and influence people"',
-    },
-    {
-      id: 2,
-      icon: '🎉',
-      content: "It's your X anniversary! Celebrate with a special post created just for you",
-    },
-    {
-      id: 3,
-      icon: '📹',
-      content:
-        "ThePrimeagen is LIVE: 'LAST STREAM FROM TOWER! QUICK RECAP! GET IN!' #ad cursor?",
-    },
-    {
-      id: 4,
-      icon: '🎀',
-      content: 'Recent post from Noor 🎀',
-    },
-    {
-      id: 5,
-      icon: '🎮',
-      content:
-        "ThePrimeagen is LIVE: '3 DAYS LEFT! KRAZAM BUILD GAME?! (+teej//) #ad cursor?'",
-    },
-    {
-      id: 6,
-      icon: '🎮',
-      content:
-        "ThePrimeagen is LIVE: 'HELP ME MAKE TOWERS - MAKING A GAME IN 7 DAYS using Cursor' #ad",
-    },
-  ];
+  const { notifications } = useNotifications();
 
   return (
     <View style={styles.container}>
-      <ScrollView>
-        {notifications.map((item) => (
-          <NotificationItem key={item.id} icon={item.icon} content={item.content} />
-        ))}
-      </ScrollView>
+      <FlatList
+        data={notifications}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <NotificationItem 
+            icon={item.icon}
+            content={item.content}
+            isRead={item.isRead}
+            postId={item.postId} // Use the actual tweet/post id
+          />
+        )}
+        contentContainerStyle={styles.listContainer}
+      />
     </View>
   );
 };
 
-export default NotificationsScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000', // Dark theme background
+    backgroundColor: '#fff',
+  },
+  listContainer: {
+    paddingVertical: 10,
   },
 });
+
+export default NotificationsScreen;

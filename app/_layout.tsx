@@ -40,6 +40,7 @@ import { TweetProvider } from '@/context/TweetContext';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
+import { NotificationProvider } from "@/context/NotificationContext";
 
 // Configure notifications
 Notifications.setNotificationHandler({
@@ -98,10 +99,12 @@ export default function DynamicLayout() {
   useFrameworkReady();
 
   return (
+    <NotificationProvider>
     <TweetProvider>
       <HeaderConfigProvider>
         <LayoutContent />
       </HeaderConfigProvider>
     </TweetProvider>
+    </NotificationProvider>
   );
 }
