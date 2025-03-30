@@ -1,11 +1,13 @@
 import React from "react";
 import { useLocalSearchParams } from "expo-router";
 import { Text } from "react-native";
-import PageView from "../../../components/containers/PageView";
+import PageView from "../../components/containers/PageView";
 import { Stack } from "expo-router";
-import TabMainHeader from "../../../components/Ui/TabMainHeader";
-import TweetDetail from "../../../components/tweet/TweetDetail";
+import TabMainHeader from "../../components/Ui/TabMainHeader";
+import TweetDetail from "../../components/tweet/TweetDetail";
 import tweets from "@/assets/data/tweets";
+import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
+// import { SafeAreaView,  } from "react-native-safe-area-context";
 
 // Recursive function to find a tweet by id in both top-level tweets and nested threads
 const findTweetById = (tweetsArray: any[], id: string): any | null => {
@@ -35,6 +37,7 @@ export default function TweetPage() {
   }
 
   return (
+    <SafeAreaView style={styles.container}>
     <PageView>
       <Stack.Screen
         options={{
@@ -49,5 +52,15 @@ export default function TweetPage() {
       />
       <TweetDetail tweet={tweet} />
     </PageView>
+    </SafeAreaView>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+  scrollContent: {
+    paddingBottom: 80,
+  },
+});

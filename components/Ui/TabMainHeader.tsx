@@ -1,3 +1,4 @@
+
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import AppIcon from "../../assets/images/app-icon.svg";
 import FeatureStrokeIcon from "../../assets/images/icons/feature_stroke_icon.svg";
@@ -106,18 +107,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    height: 45,
+    height: 50,
     paddingHorizontal: 20,
     backgroundColor: Colors.light.background,
     borderBottomWidth: 0.25,
     borderBottomColor: "#BDC5CD",
   },
   left_wrapper: {
-    flexBasis: "50%",
+    flexBasis: "10%",
     flexShrink: 1,
   },
   right_wrapper: {
-    flexBasis: "50%",
+    flexBasis: "10%",
     alignItems: "flex-end",
     flexShrink: 1,
   },
