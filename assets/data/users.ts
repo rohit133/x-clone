@@ -13,7 +13,7 @@ const users = [
     bannerImage:
       "https://images.unsplash.com/photo-1503264116251-35a269479413?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80",
     profileImage:
-      "https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YXZhdGFyfGVufDB8fDB8fHww",
+      "https://pbs.twimg.com/profile_images/1789250096116494336/eFiEjb9c_400x400.jpg",
   },
   {
     id: "u2",

@@ -4,6 +4,7 @@ import FeatureStrokeIcon from "../../assets/images/icons/feature_stroke_icon.svg
 import Colors from "../../constants/Colors";
 import { useRouter } from "expo-router";
 import { LeftArrowIcon } from "../../lib/icon";
+import users from "@/assets/data/users";
 
 type TabMainHeaderConfig = {
   sides?: {
@@ -47,7 +48,7 @@ const createTabMainHeaderComponents = (
         <Pressable onPress={() => router.push("/profile")} style={styles.iconPressable}>
           <View style={styles.user_image_wrapper}>
             <Image
-              source={require("../../assets/images/users/its_was_me_dio.jpeg")}
+              source={{ uri: users[0].profileImage }}
               style={styles.user_image}
             />
             <View style={styles.user_image_dot} />

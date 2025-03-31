@@ -1,16 +1,12 @@
 import React from "react";
-import {
-  SafeAreaView,
-  StyleSheet,
-  useColorScheme,
-} from "react-native";
 import { router } from "expo-router";
-import ChatHeader from "@/components/chats/ChatHeader";
-import ChatInput from "@/components/chats/ChatInputs";
 import Colors from "@/constants/Colors";
 import { useChat } from "@/hooks/useChat";
 import * as ImagePicker from "expo-image-picker";
+import ChatInput from "@/components/chats/ChatInputs";
+import ChatHeader from "@/components/chats/ChatHeader";
 import ChatMessageList from "@/components/chats/ChatMessageList";
+import { SafeAreaView, StyleSheet,useColorScheme,} from "react-native";
 
 export default function ChatTab() {
   // Determine the current color scheme. Default to "light" if null.
@@ -32,7 +28,7 @@ export default function ChatTab() {
     if (!permissionResult.granted) {
       alert("Permission to access media library is required!");
       return;
-    }
+    } 
 
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,

@@ -3,15 +3,15 @@ const tweets = [
     id: "t0",
     user: {
       id: "u1",
-      username: "VadimNotJustDev",
-      fullname: "Vadim",
+      username: "rohityou000",
+      fullname: "Rohit",
       image:
-        "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.png",
+        "https://pbs.twimg.com/profile_images/1789250096116494336/eFiEjb9c_400x400.jpg",
     },
     createdAt: "2020-08-27T12:00:00.000Z",
     content: "Can you please check if the Subscribe button on Youtube works?",
     image:
-      "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/images/thumbnail.png",
+      "https://images.unsplash.com/photo-1742077414023-45a81fd63736?q=80&w=2938&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     numberOfComments: 123,
     numberOfRetweets: 11,
     numberOfLikes: 10,
@@ -154,10 +154,10 @@ const tweets = [
     id: "t1",
     user: {
       id: "u1",
-      username: "VadimNotJustDev",
-      fullname: "Vadim",
+      username: "rohityou000",
+      fullname: "Rohit",
       image:
-        "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.png",
+        "https://pbs.twimg.com/profile_images/1789250096116494336/eFiEjb9c_400x400.jpg",
     },
     createdAt: "2020-08-27T12:00:00.000Z",
     content:
@@ -189,10 +189,10 @@ const tweets = [
     id: "t2",
     user: {
       id: "u1",
-      username: "VadimNotJustDev",
-      fullname: "Vadim",
+      username: "rohityou000",
+      fullname: "Rohit",
       image:
-        "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.png",
+        "https://pbs.twimg.com/profile_images/1789250096116494336/eFiEjb9c_400x400.jpg",
     },
     createdAt: "2020-08-27T12:00:00.000Z",
     content:
@@ -222,10 +222,10 @@ const tweets = [
     id: "t3",
     user: {
       id: "u1",
-      username: "VadimNotJustDev",
-      fullname: "Vadim",
+      username: "rohityou000",
+      fullname: "Rohit",
       image:
-        "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.png",
+        "https://pbs.twimg.com/profile_images/1789250096116494336/eFiEjb9c_400x400.jpg",
     },
     createdAt: "2020-08-27T12:00:00.000Z",
     content: "Hello World",
@@ -254,10 +254,10 @@ const tweets = [
     id: "t4",
     user: {
       id: "u1",
-      username: "VadimNotJustDev",
-      fullname: "Vadim",
+      username: "rohityou000",
+      fullname: "Rohit",
       image:
-        "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/vadim.png",
+        "https://pbs.twimg.com/profile_images/1789250096116494336/eFiEjb9c_400x400.jpg",
     },
     createdAt: "2020-08-27T12:00:00.000Z",
     content:
