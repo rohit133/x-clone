@@ -1,6 +1,6 @@
-// ThinkingIndicator.tsx
 import React, { useEffect, useRef } from "react";
-import { View, Animated, StyleSheet } from "react-native";
+import { View, Animated, StyleSheet, useColorScheme } from "react-native";
+import Colors from "@/constants/Colors";
 
 export default function ThinkingIndicator() {
   const dot1 = useRef(new Animated.Value(0)).current;
@@ -31,11 +31,20 @@ export default function ThinkingIndicator() {
     animateDot(dot3, 300);
   }, [dot1, dot2, dot3]);
 
+  const colorScheme = useColorScheme() ?? "light";
+  const themeColors = Colors[colorScheme];
+
   return (
     <View style={styles.container}>
-      <Animated.View style={[styles.dot, { opacity: dot1 }]} />
-      <Animated.View style={[styles.dot, { opacity: dot2 }]} />
-      <Animated.View style={[styles.dot, { opacity: dot3 }]} />
+      <Animated.View
+        style={[styles.dot, { opacity: dot1, backgroundColor: themeColors.text }]}
+      />
+      <Animated.View
+        style={[styles.dot, { opacity: dot2, backgroundColor: themeColors.text }]}
+      />
+      <Animated.View
+        style={[styles.dot, { opacity: dot3, backgroundColor: themeColors.text }]}
+      />
     </View>
   );
 }
@@ -50,7 +59,6 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: "#fff",
     marginHorizontal: 4,
   },
 });

@@ -1,8 +1,6 @@
-// ChatMessage.tsx
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, useColorScheme } from "react-native";
 import TypingMessage from "../Ui/TypingMessage";
-
 type ChatMessageProps = {
   message: string;
   sender: "user" | "bot";
@@ -17,30 +15,31 @@ export default function ChatMessage({
   animate,
 }: ChatMessageProps) {
   const isUser = sender === "user";
+  const colorScheme = useColorScheme() ?? "light";
 
   // Decide bubble width based on text length
   const bubbleWidthStyle = message.length > 40 ? styles.longBubble : styles.shortBubble;
 
+  // Define background colors based on the current theme.
+  // For dark mode, we use the original colors.
+  // For light mode, we use alternative lighter backgrounds.
+  const userBubbleBackground = colorScheme === "dark" ? "#2C2C2E" : "#E0F7FA";
+  const botBubbleBackground = colorScheme === "dark" ? "#3A3A3C" : "#F0F0F0";
+
+  const bubbleBackground = isUser ? userBubbleBackground : botBubbleBackground;
+  // Text color is set based on the theme.
+  const textColor = colorScheme === "dark" ? "#fff" : "#000";
+
   return (
-    <View
-      style={
-        isUser ? styles.userMessageContainer : styles.botMessageContainer
-      }
-    >
-      <View
-        style={[
-          styles.bubble,
-          bubbleWidthStyle,
-          isUser ? styles.userBubble : styles.botBubble,
-        ]}
-      >
+    <View style={isUser ? styles.userMessageContainer : styles.botMessageContainer}>
+      <View style={[styles.bubble, bubbleWidthStyle, { backgroundColor: bubbleBackground }]}>
         {imageUri && (
           <Image source={{ uri: imageUri }} style={styles.imagePreview} />
         )}
         {animate ? (
           <TypingMessage message={message} />
         ) : (
-          <Text style={styles.messageText}>{message}</Text>
+          <Text style={[styles.messageText, { color: textColor }]}>{message}</Text>
         )}
       </View>
     </View>
@@ -58,17 +57,8 @@ const styles = StyleSheet.create({
   longBubble: {
     maxWidth: "90%",
   },
-  userBubble: {
-    backgroundColor: "#2C2C2E",
-    borderTopRightRadius: 0,
-  },
-  botBubble: {
-    backgroundColor: "#3A3A3C",
-    borderTopLeftRadius: 0,
-  },
   messageText: {
     fontSize: 16,
-    color: "#fff",
   },
   userMessageContainer: {
     alignSelf: "flex-end",

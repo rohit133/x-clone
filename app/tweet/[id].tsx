@@ -7,9 +7,9 @@ import TabMainHeader from "../../components/Ui/TabMainHeader";
 import TweetDetail from "../../components/tweet/TweetDetail";
 import tweets from "@/assets/data/tweets";
 import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
-// import { SafeAreaView,  } from "react-native-safe-area-context";
 
-// Recursive function to find a tweet by id in both top-level tweets and nested threads
+
+
 const findTweetById = (tweetsArray: any[], id: string): any | null => {
   for (const tweet of tweetsArray) {
     if (tweet.id === id) {
@@ -25,7 +25,6 @@ const findTweetById = (tweetsArray: any[], id: string): any | null => {
 
 export default function TweetPage() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  // Use the recursive function to find the tweet by id
   const tweet = findTweetById(tweets, id);
   
   if (!tweet) {

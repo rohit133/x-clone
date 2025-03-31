@@ -1,5 +1,4 @@
-
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View, useColorScheme } from "react-native";
 import AppIcon from "../../assets/images/app-icon.svg";
 import FeatureStrokeIcon from "../../assets/images/icons/feature_stroke_icon.svg";
 import Colors from "../../constants/Colors";
@@ -31,71 +30,71 @@ type TabMainHeaderComponents = {
   };
 };
 
-const createTabMainHeaderComponents = (options: TabMainHeaderConfig["options"]): TabMainHeaderComponents => {
+const createTabMainHeaderComponents = (
+  options: TabMainHeaderConfig["options"],
+  themeColors: typeof Colors["light"]
+): TabMainHeaderComponents => {
   const router = useRouter();
 
   return {
     left: {
       back: () => (
-        <Pressable onPress={() => { router.back() }}>
-          <View>
-            <LeftArrowIcon width={13} height={19} />
-          </View>
+        <Pressable onPress={() => router.back()} style={styles.iconPressable}>
+          <LeftArrowIcon width={13} height={19} />
         </Pressable>
       ),
       user: () => (
-        <Pressable onPress={() => router.push("/profile")}>
+        <Pressable onPress={() => router.push("/profile")} style={styles.iconPressable}>
           <View style={styles.user_image_wrapper}>
-            <Image source={require("../../assets/images/users/its_was_me_dio.jpeg")} style={styles.user_image} />
-            <View style={styles.user_image_dot} />  
+            <Image
+              source={require("../../assets/images/users/its_was_me_dio.jpeg")}
+              style={styles.user_image}
+            />
+            <View style={styles.user_image_dot} />
           </View>
         </Pressable>
       ),
     },
     center: {
       title: () => (
-        <Pressable onPress={() => router.push("/")}>
-          <View>
-            <Text style={styles.title}>{options?.title || ""}</Text>
-          </View>
+        <Pressable onPress={() => router.push("/")} style={styles.centerPressable}>
+          <Text style={[styles.title, { color: themeColors.text }]}>
+            {options?.title || ""}
+          </Text>
         </Pressable>
       ),
-
       logo: () => (
-        <Pressable onPress={() => router.push("/")}>
-          <View>
-            <AppIcon width={27} height={22} />
-          </View>
+        <Pressable onPress={() => router.push("/")} style={styles.centerPressable}>
+          <AppIcon width={27} height={22} />
         </Pressable>
       ),
     },
     right: {
       feature: () => (
-        <Pressable onPress={() => router.push("/actions")}>
-          <View>
-            <FeatureStrokeIcon width={23} height={22} />
-          </View>
+        <Pressable onPress={() => router.push("/actions")} style={styles.iconPressable}>
+          <FeatureStrokeIcon width={23} height={22} />
         </Pressable>
       ),
     },
-
   };
 };
 
+
 const TabMainHeader = ({ sides = { left: "user", center: "logo", right: "feature" }, options }: TabMainHeaderConfig) => {
-  const tabMainHeaderComps = createTabMainHeaderComponents(options);
+  const colorScheme = useColorScheme() ?? "light";
+  const themeColors = Colors[colorScheme];
+  const tabMainHeaderComps = createTabMainHeaderComponents(options, themeColors);
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: themeColors.background, borderBottomColor: Colors.secondary_text_color }]}>
       <View style={styles.left_wrapper}>
-          {sides.left !== "empty" && tabMainHeaderComps.left[sides.left]()}
+        {sides.left !== "empty" && tabMainHeaderComps.left[sides.left]()}
       </View>
-
       <View style={styles.center_wrapper}>
-          {tabMainHeaderComps.center[sides.center]()}
+        {tabMainHeaderComps.center[sides.center]()}
       </View>
-
       <View style={styles.right_wrapper}>
-          {sides.right !== "empty" && tabMainHeaderComps.right[sides.right]()}
+        {sides.right !== "empty" && tabMainHeaderComps.right[sides.right]()}
       </View>
     </View>
   );
@@ -109,9 +108,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     height: 50,
     paddingHorizontal: 20,
-    backgroundColor: Colors.light.background,
-    borderBottomWidth: 0.25,
-    borderBottomColor: "#BDC5CD",
+    borderBottomWidth: 0.5,
   },
   left_wrapper: {
     flexBasis: "10%",
@@ -124,6 +121,7 @@ const styles = StyleSheet.create({
   },
   center_wrapper: {
     flexShrink: 0,
+    alignItems: "center",
   },
   user_image_wrapper: {
     position: "relative",
@@ -142,12 +140,17 @@ const styles = StyleSheet.create({
     width: 7,
     height: 7,
     borderWidth: 1,
-    borderColor: Colors.light.background,
     borderRadius: 3,
-    backgroundColor: Colors.main,
   },
   title: {
     fontWeight: "700",
+    fontSize: 18,
+  },
+  iconPressable: {
+    padding: 8, // Better touch area
+  },
+  centerPressable: {
+    paddingVertical: 6, // Better tap space
   },
 });
 

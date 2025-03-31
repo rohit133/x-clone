@@ -1,46 +1,14 @@
-// import { Stack } from "expo-router";
-// import TabMainHeader from "../components/Ui/TabMainHeader";
-// import { StatusBar } from "react-native";
-// import { SafeAreaView } from "react-native-safe-area-context";
-// import { HeaderConfigProvider, HeaderConfigContext } from "@/context/HeaderConfigContext";
-// import { useContext } from "react";
-
-// function LayoutContent() {
-//   const { config } = useContext(HeaderConfigContext);
-
-//   return ( 
-//     <SafeAreaView style={{ flex: 1 }} edges={["right", "top", "left"]}>
-//       <StatusBar animated />
-//       <Stack
-//         screenOptions={{
-//           header: () => <TabMainHeader  {...config}/>,
-//         }}
-//       />
-//     </SafeAreaView>
-//   );
-// }
-
-
-// export default function DynamicLayout() {
-//   return (
-//     <HeaderConfigProvider>
-//       <LayoutContent />
-//     </HeaderConfigProvider>
-//   );
-// }
-
-
 import { Stack } from "expo-router";
-import TabMainHeader from "../components/Ui/TabMainHeader";
-import { StatusBar } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { HeaderConfigProvider, HeaderConfigContext } from "@/context/HeaderConfigContext";
-import { useContext, useEffect } from "react";
-import { TweetProvider } from '@/context/TweetContext';
-import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
+import { StatusBar } from "react-native";
+import { useContext, useEffect } from "react";
+import * as Notifications from 'expo-notifications';
+import { TweetProvider } from '@/context/TweetContext';
+import TabMainHeader from "../components/Ui/TabMainHeader";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { NotificationProvider } from "@/context/NotificationContext";
+import { HeaderConfigProvider, HeaderConfigContext } from "@/context/HeaderConfigContext";
 
 // Configure notifications
 Notifications.setNotificationHandler({

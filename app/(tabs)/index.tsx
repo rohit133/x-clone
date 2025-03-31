@@ -1,11 +1,14 @@
 import React, { useState, useCallback } from "react";
-import { ScrollView, StyleSheet, RefreshControl } from "react-native";
+import { ScrollView, StyleSheet, RefreshControl, useColorScheme } from "react-native";
 import PageView from "../../components/containers/PageView";
-import Tweet from "../../components/tweet/Tweet";
+import TweetList from "../../components/tweet/TweetList";
 import tweetsData from "@/assets/data/tweets"; 
 import { useFocusEffect } from "@react-navigation/native";
+import Colors from "@/constants/Colors";
 
 export default function IndexTab() {
+  const colorScheme = useColorScheme() ?? "light";
+  
   const [tweets, setTweets] = useState(tweetsData);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -29,15 +32,30 @@ export default function IndexTab() {
   };
 
   return (
-    <PageView>
-      <ScrollView style={styles.scrollView} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
+    <PageView style={StyleSheet.flatten([styles.container, { backgroundColor: Colors[colorScheme].background }])}>
+      <ScrollView 
+        style={styles.scrollView} 
+        refreshControl={
+          <RefreshControl 
+            refreshing={refreshing} 
+            onRefresh={onRefresh} 
+            tintColor={Colors[colorScheme].text}
+          />
+        }
+      >
         {tweets.map((tweet) => (
-          <Tweet key={tweet.id}
-            tweet={{ ...tweet, user: {...tweet.user,
+          <TweetList 
+            key={tweet.id}
+            tweet={{ 
+              ...tweet, 
+              user: { 
+                ...tweet.user,
                 id: tweet.user.id,
                 fullname: tweet.user.fullname ?? '',
               },
-              thread: tweet.thread?.map((threadTweet) => ({ ...threadTweet, user: {
+              thread: tweet.thread?.map((threadTweet) => ({
+                ...threadTweet,
+                user: {
                   ...threadTweet.user,
                   id: threadTweet.user.id,
                 },
@@ -53,7 +71,6 @@ export default function IndexTab() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   scrollView: {
     flex: 1,

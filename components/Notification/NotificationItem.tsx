@@ -1,9 +1,7 @@
-// NotificationItem.js
-
 import Colors from '@/constants/Colors';
 import { ThreeDotsIcon } from '@/lib/icon';
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable, GestureResponderEvent } from 'react-native';
+import { View, Text, StyleSheet, Pressable, GestureResponderEvent, useColorScheme } from 'react-native';
 import { router } from 'expo-router';
 
 interface NotificationItemProps {
@@ -22,28 +20,31 @@ const tooltipOptions = [
 const NotificationItem: React.FC<NotificationItemProps> = ({ icon, content, isRead = false, postId }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const [read, setRead] = useState(isRead);
+  const colorScheme = useColorScheme() ?? "light";
+  const themeColors = Colors[colorScheme];
 
-  // When the notification is pressed, mark it as read and navigate.
   const handleNotificationPress = () => {
     setRead(true);
     setShowTooltip(false);
     router.push(`/tweet/${postId}`);
   };
-
-  // Toggle tooltip when pressing the three-dot icon.
   const handleDotPress = (e: GestureResponderEvent) => {
     e.stopPropagation();
     setShowTooltip((prev) => !prev);
   };
-
-  // When tapping on a tooltip option, simply hide the tooltip.
   const handleTooltipItemPress = () => {
     setShowTooltip(false);
   };
 
   return (
     <Pressable onPress={handleNotificationPress}>
-      <View style={[styles.container, !read && styles.unreadContainer]}>
+      <View
+        style={[
+          styles.container,
+          { borderBottomColor: Colors.secondary_text_color },
+          !read && styles.unreadContainer,
+        ]}
+      >
         {/* Icon / Avatar Area */}
         <View style={styles.iconContainer}>
           <Text style={styles.iconText}>{icon}</Text>
@@ -51,7 +52,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ icon, content, isRe
 
         {/* Text Content Area */}
         <View style={styles.contentContainer}>
-          <Text style={styles.contentText}>{content}</Text>
+          <Text style={[styles.contentText, { color: themeColors.text }]}>{content}</Text>
         </View>
 
         {/* Three dots icon to toggle tooltip */}
@@ -84,11 +85,12 @@ export default NotificationItem;
 
 const styles = StyleSheet.create({
   container: {
+    marginBottom: 2,
     flexDirection: 'row',
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderBottomWidth: 0.5,
-    borderBottomColor: Colors.secondary_text_color,
+    borderRadius: 20,
     alignItems: 'center',
     position: 'relative',
     overflow: 'visible',
@@ -110,7 +112,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   contentText: {
-    color: Colors.light.text,
     fontSize: 14,
     lineHeight: 20,
   },
