@@ -1,6 +1,7 @@
-import { SearchBorderIcon } from "@/lib/icon";
 import React, { useState, useEffect } from "react";
-import { TextInput, StyleSheet, View } from "react-native";
+import { TextInput, StyleSheet, View, useColorScheme } from "react-native";
+import { SearchBorderIcon } from "@/lib/icon";
+import Colors from "@/constants/Colors";
 
 interface SearchBarProps {
   onDebouncedSearch: (query: string) => void;
@@ -9,6 +10,8 @@ interface SearchBarProps {
 
 const SearchBar: React.FC<SearchBarProps> = ({ onDebouncedSearch, debounceTime = 300 }) => {
   const [input, setInput] = useState("");
+  const colorScheme = useColorScheme() ?? "light";
+  const themeColors = Colors[colorScheme];
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -21,8 +24,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onDebouncedSearch, debounceTime =
   return (
     <View style={styles.searchBarContainer}>
       <TextInput
-        style={styles.searchBar}
+        style={[styles.searchBar, { borderColor: themeColors.text, color: themeColors.text }]}
         placeholder="Search messages..."
+        placeholderTextColor={Colors.secondary_text_color}
         value={input}
         onChangeText={setInput}
       />
@@ -40,7 +44,6 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     height: 60,
-    borderColor: "#ccc",
     borderWidth: 0.5,
     borderRadius: 40,
     paddingHorizontal: 20,

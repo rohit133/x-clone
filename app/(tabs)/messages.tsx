@@ -3,11 +3,11 @@ import DirectMessages from "@/components/ChatList/DirectMessages";
 import SearchBar from "@/components/Ui/SearchBar";
 import Colors from "@/constants/Colors";
 import React, { useState } from "react";
-import { View, FlatList, Text, StyleSheet } from "react-native";
-
+import { View, FlatList, Text, StyleSheet, useColorScheme } from "react-native";
 
 export default function MessagesTab() {
   const [searchQuery, setSearchQuery] = useState("");
+  const colorScheme = useColorScheme() ?? "light";
 
   // Filter messages based on search query (by name, handle, or message)
   const filteredMessages = messages.filter((item) =>
@@ -17,7 +17,7 @@ export default function MessagesTab() {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: Colors[colorScheme].background }]}>
       <SearchBar onDebouncedSearch={setSearchQuery} debounceTime={300} />
       {filteredMessages.length === 0 ? (
         <View style={styles.emptyContainer}>
@@ -33,7 +33,6 @@ export default function MessagesTab() {
               handle={item.handle}
               date={item.date}
               message={item.message}
-              // Optionally pass an avatarUrl if available
             />
           )}
         />
@@ -45,7 +44,6 @@ export default function MessagesTab() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
     padding: 10,
   },
   emptyContainer: {

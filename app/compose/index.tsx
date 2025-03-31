@@ -1,5 +1,3 @@
-// ComposeTweetScreen.tsx
-
 import Colors from "@/constants/Colors";
 import users from "@/assets/data/users";
 import tweets from "@/assets/data/tweets";
@@ -9,15 +7,16 @@ import { useTweetComposer } from "@/hooks/useTweetComposer";
 import TweetComposer from "@/components/composer/TweetComposer";
 import ComposeHeader from "@/components/composer/ComposeHeader";
 import ComposeToolbar from "@/components/composer/ComposeToolbar";
-import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Alert, ToastAndroid } from "react-native";
+import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Alert, ToastAndroid, useColorScheme } from "react-native";
 import { useNotifications } from "@/context/NotificationContext";
-
 
 // Simple helper to generate a random ID.
 const generateRandomId = () => "t" + Math.floor(Math.random() * 1000000);
 
 export default function ComposeTweetScreen() {
   const navigation = useNavigation();
+  const colorScheme = useColorScheme() ?? "light";
+  const themeColors = Colors[colorScheme];
   const userInfo = users.find((user) => user.id === "u1");
   const {
     tweetContent,
@@ -128,8 +127,8 @@ export default function ComposeTweetScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" />
+    <SafeAreaView style={[styles.container, { backgroundColor: themeColors.background }]}>
+      <StatusBar barStyle={colorScheme === "dark" ? "light-content" : "dark-content"} />
       <ComposeHeader
         handlePost={handlePost}
         isPosting={isPosting}
@@ -174,7 +173,6 @@ export default function ComposeTweetScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.light.background,
   },
   scrollContent: {
     paddingHorizontal: 16,

@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import Tweet from "@/components/tweet/Tweet";
+import Tweet from "@/components/tweet/TweetList";
 import type { Tweet as TweetType } from "@/types";
 
 const ProfileTweets = ({ tweets }: { tweets: TweetType[] }) => {

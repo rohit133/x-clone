@@ -1,13 +1,16 @@
 import ChatMessageList from "@/components/chats/ChatMessageList";
 import ChatInput from "@/components/chats/ChatInputs";
 import React, { useState } from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet, useColorScheme } from "react-native";
 import { Colors } from "react-native/Libraries/NewAppScreen";
 import * as ImagePicker from "expo-image-picker";
 import ChatHeader from "@/components/chats/ChatHeader";
 import { router } from "expo-router";
 
 export default function DirectMessagesChatScreen() {
+  const colorScheme = useColorScheme() ?? "light";
+  const themeColors = Colors[colorScheme];
+  
   const [message, setMessage] = useState("");
   type ChatMessageType = { id: string; text: string; sender: "user" | "bot" };
   const [chatMessages, setChatMessages] = useState<ChatMessageType[]>([]);
@@ -65,7 +68,7 @@ export default function DirectMessagesChatScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: themeColors.background }]}>
           <ChatHeader
               title="John Doe"
               onPressSettings={() => (router.push('/action'))}

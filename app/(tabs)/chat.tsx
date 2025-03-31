@@ -1,16 +1,21 @@
-// ChatTab.tsx
 import React from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  useColorScheme,
+} from "react-native";
 import { router } from "expo-router";
 import ChatHeader from "@/components/chats/ChatHeader";
 import ChatInput from "@/components/chats/ChatInputs";
 import Colors from "@/constants/Colors";
-
 import { useChat } from "@/hooks/useChat";
 import * as ImagePicker from "expo-image-picker";
 import ChatMessageList from "@/components/chats/ChatMessageList";
 
 export default function ChatTab() {
+  // Determine the current color scheme. Default to "light" if null.
+  const colorScheme = useColorScheme() ?? "light";
+
   const {
     message,
     setMessage,
@@ -22,7 +27,8 @@ export default function ChatTab() {
   } = useChat();
 
   const handleImagePress = async () => {
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permissionResult.granted) {
       alert("Permission to access media library is required!");
       return;
@@ -44,14 +50,22 @@ export default function ChatTab() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        { backgroundColor: Colors[colorScheme].background },
+      ]}
+    >
       <ChatHeader
         title="Grok 3"
         onPressProfile={() => console.log("Profile pressed")}
         onPressSettings={() => console.log("Settings pressed")}
         onPressBack={() => router.back()}
       />
-      <ChatMessageList chatMessages={chatMessages} loadingResponse={loadingResponse} />
+      <ChatMessageList
+        chatMessages={chatMessages}
+        loadingResponse={loadingResponse}
+      />
       <ChatInput
         message={message}
         onChangeMessage={setMessage}
@@ -67,6 +81,5 @@ export default function ChatTab() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.dark.background,
   },
 });

@@ -1,12 +1,25 @@
-import { StyleSheet, View } from "react-native";
+import React from "react";
+import { StyleSheet, View, useColorScheme, ViewStyle } from "react-native";
+import Colors from "@/constants/Colors";
 
-const PageView = ({ children }: { children: React.ReactNode }) => {
-  return <View style={styles.container}>{children}</View>;
+type PageViewProps = {
+  children: React.ReactNode;
+  style?: ViewStyle;
 };
+
+const PageView = ({ children, style }: PageViewProps) => {
+  const colorScheme = useColorScheme() ?? "light";
+  return (
+    <View style={[styles.container, { backgroundColor: Colors[colorScheme].background }, style]}>
+      {children}
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#E7ECF0",
   },
 });
+
 export default PageView;

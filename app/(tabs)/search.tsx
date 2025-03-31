@@ -2,11 +2,14 @@ import TrendingList from "@/components/Search/TrendingList";
 import SearchBar from "@/components/Ui/SearchBar";
 import WhoToFollow from "@/components/Search/WhoToFollow";
 import React, { useState } from "react";
-import { SafeAreaView, StyleSheet, View, SectionList, Text } from "react-native";
+import { SafeAreaView, StyleSheet, View, SectionList, Text, useColorScheme } from "react-native";
 import SearchResults from "@/components/Search/SearchResults";
+import Colors from "@/constants/Colors";
 
 export default function SearchTab() {
   const [query, setQuery] = useState("");
+  const colorScheme = useColorScheme() ?? "light";
+  const themeColors = Colors[colorScheme];
 
   const handleSearch = (searchQuery: string) => {
     setQuery(searchQuery);
@@ -23,7 +26,7 @@ export default function SearchTab() {
   if (query.trim().length > 0) {
     // When there's a search query, render the search results.
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: themeColors.background }]}>
         {renderHeader()}
         <SearchResults query={query} />
       </SafeAreaView>
@@ -36,10 +39,9 @@ export default function SearchTab() {
     ];
 
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={[styles.container, { backgroundColor: themeColors.background }]}>
         {renderHeader()}
-        <SectionList
-          sections={sections}
+        <SectionList sections={sections}
           keyExtractor={(item, index) => item + index}
           renderItem={({ section }) => {
             if (section.title === "Trending") {
@@ -50,7 +52,7 @@ export default function SearchTab() {
             return null;
           }}
           renderSectionHeader={({ section: { title } }) => (
-            <Text style={styles.sectionHeader}>{title}</Text>
+            <Text style={[styles.sectionHeader, { color: themeColors.text }]}>{title}</Text>
           )}
           contentContainerStyle={styles.listContainer}
         />
@@ -62,7 +64,6 @@ export default function SearchTab() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
   },
   searchbar: {
     paddingVertical: 10,

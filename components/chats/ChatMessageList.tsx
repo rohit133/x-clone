@@ -1,10 +1,10 @@
-// components/ChatMessageList.tsx
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import Colors from "@/constants/Colors";
+import { ChatMessageType } from "@/hooks/useChat";
 import ChatMessage from "@/components/chats/ChatMessage";
 import PinnedMessage from "@/components/chats/PinnedMessage";
 import ThinkingIndicator from "@/components/Ui/ThinkingIndicator";
-import { ChatMessageType } from "@/hooks/useChat";
+import { ScrollView, StyleSheet, useColorScheme } from "react-native";
 
 type ChatMessageListProps = {
   chatMessages: ChatMessageType[];
@@ -15,11 +15,15 @@ export default function ChatMessageList({
   chatMessages,
   loadingResponse,
 }: ChatMessageListProps) {
+  const colorScheme = useColorScheme() ?? "light";
+  const themeColors = Colors[colorScheme];
+
   return (
     <ScrollView
       contentContainerStyle={[
         styles.scrollContent,
         chatMessages.length === 0 && styles.centerContent,
+        { backgroundColor: themeColors.background },
       ]}
     >
       {chatMessages.length === 0 ? (
