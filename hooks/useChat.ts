@@ -1,4 +1,3 @@
-// hooks/useChat.ts
 import { useState } from "react";
 import { fetchChatResponse, cleanPrompt, generateId } from "../utils/chatApi";
 
